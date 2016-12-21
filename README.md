@@ -86,13 +86,9 @@ DATASET PREPARATION
 
 For preparing our data before diving into analysis we follow the process as described below:
 
-<ol>
-<li>
-Read both datasets and initialize libraries to be used.
-</li>
-<li>
-Check for and remove missing values:
-</li>
+-   Read both datasets and initialize libraries to be used.
+
+-   Check for and remove missing values:
 
 ``` r
 sapply(hw.stations, function(x) sum(is.na(x))) # check for missing values
@@ -112,9 +108,7 @@ sapply(hw.trips, function(x) sum(is.na(x))) # check for missing values
     ##     gender 
     ##          0
 
-<li>
-We find that there are 49 negative values for the `duration` variable. As such, we remove these entries:
-</li>
+-   We find that there are 49 negative values for the `duration` variable. As such, we remove these entries:
 
 ``` r
 hw.trips %>% filter(., duration<0) %>% nrow() # check how many rows will be removed
@@ -140,9 +134,8 @@ hw.trips$duration %>% quantile(c(.999)) #to make sure we are not removing a lot 
 hw.trips %>% filter(., duration < 86400) -> hw.trips #remove
 ```
 
-<li>
-We move on to deleting resets: a bike's timer gets reset when it is taken out and put back into the same station in less than 5 minutes.
-</li>
+-   We move on to deleting resets: a bike's timer gets reset when it is taken out and put back into the same station in less than 5 minutes.
+
 ``` r
 # Delete resets: Threshold of 5 min (300 seconds))
 hw.trips %>% filter(., strt_statn==end_statn & duration<300) %>% nrow() # check
@@ -154,17 +147,15 @@ hw.trips %>% filter(., strt_statn==end_statn & duration<300) %>% nrow() # check
 hw.trips %>% filter(., !(strt_statn==end_statn & duration<300)) -> hw.trips #remove
 ```
 
-<li>
-Due to the format of zipcodes we now remove the preceding `'` sign:
-</li>
+-   Due to the format of zipcodes we now remove the preceding `'` sign:
+
 ``` r
 # fix zipcode. Remove prefix and turn into number
 hw.trips$zip_code %>% sapply(., function(x) {substring(x, 1)}) %>% as.factor() -> hw.trips$zip_code
 ```
 
-<li>
-Create factor levels for stations and remove observations with start or end station set to `null` or `na`:
-</li>
+-   Create factor levels for stations and remove observations with start or end station set to `null` or `na`:
+
 ``` r
 # create factors for stations
 hw.trips$strt_statn <- as.factor(hw.trips$strt_statn)
@@ -191,9 +182,8 @@ Calculate age of Hubway users and save the result in a new variable named `age`:
 hw.trips %>% mutate(. , age = 2012 - birth_date ) -> hw.trips
 ```
 
-<li>
-Create columns for time, month, year and day of the week separately:
-</li>
+-   Create columns for time, month, year and day of the week separately:
+
 ``` r
 # Extract time, month, year, and day of the week from dates 
 #time (hour, minute)
@@ -211,13 +201,11 @@ hw.trips$end_date %>% strftime(., "%y") %>% as.factor() -> hw.trips$end_date_yea
 hw.trips$end_date %>% weekdays(.) %>% as.factor() -> hw.trips$end_date_weekday
 ```
 
-<li>
-Save two new data sets:
-</li>
+-   Save two new data sets:
+
 -   `hubway_stations_clean.csv`
 -   `hubway_trips_clean.csv`
 
-</ol>
 VARIABLE SUMMARIES
 ==================
 
