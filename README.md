@@ -93,6 +93,7 @@ Read both datasets and initialize libraries to be used.
 <li>
 Check for and remove missing values:
 </li>
+
 ``` r
 sapply(hw.stations, function(x) sum(is.na(x))) # check for missing values
 ```
@@ -114,6 +115,7 @@ sapply(hw.trips, function(x) sum(is.na(x))) # check for missing values
 <li>
 We find that there are 49 negative values for the `duration` variable. As such, we remove these entries:
 </li>
+
 ``` r
 hw.trips %>% filter(., duration<0) %>% nrow() # check how many rows will be removed
 ```
